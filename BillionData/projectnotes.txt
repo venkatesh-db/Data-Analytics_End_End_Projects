@@ -1,0 +1,108 @@
+
+
+'''
+
+| Component        | Practical Limit        |
+| ---------------- | ---------------------- |
+| Pandas in-memory | ~5–10 million rows     |
+| Chunk processing | **1B rows possible ✅** |
+| MySQL table size | ~100–300 GB (with SSD) |
+| Query speed      | Depends on indexing    |
+
+
+'''
+
+
+You are a Senior Data Engineer responsible for analyzing ~10 lakh rows of production log data stored in MySQL.
+
+Objective:
+Design and implement an efficient ETL pipeline using Python (Pandas) to extract actionable insights from production logs.
+ The solution should follow scalable design principles so it can handle future growth to 1B+ rows.
+
+Context:
+
+* Source system: MySQL (OLTP database)
+* Data includes API logs: service_name, status_code, response_time, timestamps
+* Dataset size: ~10 lakh rows
+* Memory available: 8–32 GB RAM
+* Processing tool: Pandas
+
+---
+
+Requirements:
+
+1. Data Extraction:
+
+   * Use chunk-based extraction (chunksize: 50K–100K rows)
+   * Fetch only required columns (avoid SELECT *)
+   * Use indexed columns (created_at, service_name)
+   * Simple full scan is acceptable, but design should support incremental loads
+
+2. Data Transformation:
+
+   * Clean null and invalid records
+   * Convert timestamps to standard datetime format
+   * Categorize errors:
+
+     * 2xx → Success
+     * 4xx → Client Error
+     * 5xx → Server Error
+   * Compute:
+
+     * Daily service-wise request count
+     * Failure count and failure rate (%)
+     * P95 latency (exact calculation allowed at this scale)
+     * Peak traffic hour per service
+
+3. Memory Optimization:
+
+   * Use chunk processing (do not rely fully on loading entire dataset)
+   * Maintain intermediate aggregates instead of full raw storage
+   * Store latency values (acceptable at this scale)
+
+4. Data Aggregation:
+
+   * Use dictionary-based or Pandas groupby aggregation
+   * Merge chunk-level aggregates into final dataset
+   * Ensure grouping by (service_name, date)
+
+5. Data Loading:
+
+   * Store results into MySQL analytics table
+   * Use UPSERT (ON DUPLICATE KEY UPDATE)
+   * Ensure no duplicate aggregation records
+
+6. Reliability:
+
+   * Basic error handling (try/catch, logging)
+   * Idempotent processing (safe to rerun pipeline)
+   * Metadata tracking optional (recommended for future scaling)
+
+7. Performance:
+
+   * Use indexing in MySQL (created_at, service_name)
+   * Optimize chunk size for local machine performance
+   * Avoid unnecessary joins or full table scans
+
+---
+
+Expected Output Table:
+service_name, date, total_requests, failures, error_rate, p95_latency, peak_hour
+
+---
+
+Business Outcomes:
+
+* Identify top failing services by error rate
+* Detect high latency services (P95 latency spikes)
+* Find peak traffic hours for scaling decisions
+* Provide insights for performance optimization and system reliability
+
+---
+
+Deliverables:
+
+* Python ETL script using Pandas (chunk-based processing)
+* MySQL schema (source + analytics tables)
+* Sample SQL queries for insights
+* Explanation of scalability path from 10 lakh → 1 billion rows

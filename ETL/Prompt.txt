@@ -1,0 +1,58 @@
+
+
+You are a Senior Data Engineer working on a production-grade ETL pipeline.
+
+Objective:
+Design and implement an ETL pipeline for analyzing real-world production issues from a MySQL database.
+
+Context:
+
+* Source system: MySQL (OLTP database)
+* Data represents production logs such as API failures, response times, error codes, and timestamps.
+* Target system: Analytical MySQL database (or Data Warehouse schema)
+
+Requirements:
+
+1. Extract:
+
+   * Pull incremental data from MySQL using a timestamp column (created_at / updated_at)
+   * Handle large datasets efficiently (pagination / batching)
+
+2. Transform:
+
+   * Clean null or invalid values
+   * Convert timestamps to standard format
+   * Categorize errors (4xx → Client Error, 5xx → Server Error)
+   * Aggregate metrics:
+
+     * Failure count per service
+     * Average response time
+     * Error rate %
+
+3. Load:
+
+   * Insert into analytics tables
+   * Use UPSERT to avoid duplicates
+   * Maintain data integrity
+
+4. Performance:
+
+   * Handle millions of rows
+   * Optimize queries using indexing
+   * Use batch inserts
+
+5. Output:
+
+   * Create a final analytics table:
+     service_name, date, total_requests, failures, avg_latency, error_rate
+
+6. Bonus:
+
+   * Logging and retry mechanism
+   * Idempotent ETL design
+
+Provide:
+
+* SQL schema
+* Python ETL code
+* Sample queries for analytics

@@ -1,0 +1,75 @@
+# Architecture Diagram (Text-Based)
+
+## Overview:
+The GenAI-powered matrimony platform consists of the following components:
+
+1. **Frontend**:
+   - User-facing application (web/mobile).
+   - Interfaces with backend APIs.
+
+2. **Backend**:
+   - **API Layer**:
+     - Golang microservices for handling user requests.
+     - Exposes REST/GraphQL APIs.
+   - **AI Services**:
+     - Python FastAPI for AI-driven functionalities.
+     - Includes LLM-based matchmaking and embedding pipelines.
+   - **Event Streaming**:
+     - Kafka for real-time event streaming.
+   - **Caching**:
+     - Redis for low-latency data access.
+   - **Database**:
+     - PostgreSQL for structured data storage.
+     - Vector database (FAISS/Pinecone) for embeddings.
+
+3. **Modules**:
+   - Profile Intelligence Engine: Extracts personality traits and values.
+   - Semantic Matching Engine: Matches profiles using embeddings.
+   - Behavioral Learning System: Learns user behavior over time.
+   - Explainable AI: Provides reasoning for matches.
+
+4. **Advanced Features**:
+   - AI Chatbot for matchmaking.
+   - Chat compatibility analyzer.
+   - Red flag detection system.
+   - Family compatibility scoring.
+
+5. **Deployment**:
+   - Kubernetes for container orchestration.
+   - CI/CD pipeline for automated deployment.
+
+---
+
+# Folder Structure
+
+```
+matrimony_platform/
+├── backend/
+│   ├── api/
+│   │   ├── main.go                # Golang API entry point
+│   │   └── ...                    # Other API-related files
+│   ├── ai_services/
+│   │   ├── app.py                 # FastAPI entry point
+│   │   └── ...                    # AI-related files
+│   ├── kafka/
+│   │   └── ...                    # Kafka configurations
+│   ├── redis/
+│   │   └── ...                    # Redis configurations
+│   ├── db/
+│   │   ├── migrations/            # Database migrations
+│   │   └── ...                    # Database models and scripts
+├── embeddings/
+│   └── ...                        # Embedding pipelines
+├── matching_algorithm/
+│   └── ...                        # Matching logic
+├── advanced_features/
+│   ├── chatbot/
+│   ├── compatibility_analyzer/
+│   ├── red_flag_detection/
+│   └── family_scoring/
+├── deployment/
+│   ├── kubernetes/                # Kubernetes manifests
+│   └── cicd/                      # CI/CD pipeline configurations
+└── docs/
+    └── ...                        # Documentation
+```

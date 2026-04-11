@@ -1,0 +1,111 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: matrimony-platform-storage
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: matrimony-platform-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "endpoints", "persistentvolumeclaims"]
+  verbs: ["get", "list", "watch", "create", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: matrimony-platform-rolebinding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: Role
+  name: matrimony-platform-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matrimony-platform
+  labels:
+    app: matrimony-platform
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: matrimony-platform
+  template:
+    metadata:
+      labels:
+        app: matrimony-platform
+    spec:
+      containers:
+      - name: api-service
+        image: matrimony-platform-api:v1.0.0
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        volumeMounts:
+        - mountPath: "/data"
+          name: storage-volume
+      - name: ai-service
+        image: matrimony-platform-ai:v1.0.0
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        volumeMounts:
+        - mountPath: "/data"
+          name: storage-volume
+      - name: chatbot-service
+        image: matrimony-platform-chatbot:v1.0.0
+        ports:
+        - containerPort: 8001
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        volumeMounts:
+        - mountPath: "/data"
+          name: storage-volume
+      volumes:
+      - name: storage-volume
+        persistentVolumeClaim:
+          claimName: matrimony-platform-storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: matrimony-platform-service
+spec:
+  selector:
+    app: matrimony-platform
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer

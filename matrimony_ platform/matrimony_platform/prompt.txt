@@ -1,0 +1,58 @@
+
+
+You are a Staff Engineer building a production-grade GenAI-powered matrimony platform.
+
+Requirements:
+
+1. Build a scalable matchmaking system using:
+   - LLMs (fine-tuned using LoRA)
+   - Vector database (FAISS or Pinecone)
+   - Embedding pipelines for user profiles
+
+2. Design modules:
+   - Profile intelligence engine (extract personality, values)
+   - Semantic matching engine using embeddings
+   - Behavioral learning system
+   - Explainable AI for match reasoning
+
+3. Implement:
+   - Golang microservices (API layer)
+   - Python FastAPI for AI services
+   - Kafka for event streaming
+   - Redis caching
+   - PostgreSQL for structured data
+
+4. Build matching algorithm combining:
+   - Semantic similarity
+   - Personality compatibility
+   - Preferences overlap
+   - Behavioral signals
+
+5. Ensure:
+   - High scalability (millions of users)
+   - Low latency (<200ms match response)
+   - Cost optimization (embedding caching, batching)
+   - Explainability (important for trust)
+
+6. Add advanced features:
+   - AI chatbot for matchmaking
+   - Chat compatibility analyzer
+   - Red flag detection system
+   - Family compatibility scoring
+
+7. Provide:
+   - Complete architecture diagram (text)
+   - Folder structure
+   - Sample APIs
+   - Production deployment (Kubernetes)
+   - CI/CD pipeline
+
+Output clean, production-ready code and architecture.
+create all code in this  folder with out out error 
+
+
+next project 
+
+Performance Optimization: Embedding caching and batching could be further optimized for low latency.
+Security: Add more robust security measures (e.g., input validation, secure API endpoints).
+Monitoring: Integrate monitoring tools (e.g., Prometheus, Grafana) for better observability.
